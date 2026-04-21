@@ -2,7 +2,6 @@ import streamlit as st
 import psycopg2
 import pandas as pd
 import numpy as np
-from dotenv import dotenv_values
 from datetime import datetime, timedelta
 
 # ==================== CONFIG ====================
@@ -58,14 +57,13 @@ st.markdown("""
 # ==================== DB CONNECTION ====================
 @st.cache_resource
 def get_connection():
-    config = dotenv_values(".env")
     try:
         conn = psycopg2.connect(
-            dbname=config.get("DB_NAME"),
-            user=config.get("DB_USER"),
-            password=config.get("DB_PASSWORD"),
-            host=config.get("DB_HOST"),
-            port=config.get("DB_PORT")
+            dbname=st.secrets["DB_NAME"],
+            user=st.secrets["DB_USER"],
+            password=st.secrets["DB_PASSWORD"],
+            host=st.secrets["DB_HOST"],
+            port=st.secrets["DB_PORT"]
         )
         return conn
     except Exception as e:
